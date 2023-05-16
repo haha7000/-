@@ -6,7 +6,7 @@ import time
 import cv2
 import requests
 
-def transpose_chord(chord, half_steps):
+def transpose_chord(chord, half_steps): # 코드 변환 함수
     # 코드를 구성하는 음계 리스트
     notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     
@@ -18,12 +18,15 @@ def transpose_chord(chord, half_steps):
     new_index = (root_index + half_steps) % 12
     return notes[new_index] + chord[1:]
 
+def modify_text(text): #잘못 인식된 코드 바꿔주는 함수
+    replaced_text = text.replace("t", "#")
+    return replaced_text
 
 
 api_url = 'https://qrzccj1y9c.apigw.ntruss.com/custom/v1/22243/60e2b8a7e366adc85128cffa9fb17254e9c8e9e4a73a7b6eac9c819a718987a3/general'
 secret_key = 'ZkhvZFJGUXd2WFRkVWNrWExGc0RXbU9EaVRGYXZuRkc='
 
-path = 'ekg.png'
+path = 'fly.png'
 files = [('file', open(path,'rb'))]
 
 request_json = {'images': [{'format': 'jpg',
@@ -46,7 +49,6 @@ result = response.json()
 
 img = cv2.imread(path)
 roi_img = img.copy()
-roi_img2 = img.copy()
 font_italic = cv2.FONT_ITALIC
 
 for field in result['images'][0]['fields']:
@@ -64,9 +66,9 @@ for field in result['images'][0]['fields']:
         bottomLeft = [int(_) for _ in pts[3]]
 
         fill_img = cv2.rectangle(roi_img, tuple(topLeft), tuple(bottomRight), (255,255,255), thickness=-1) # 코드(chord)부분을 흰색도형으로 지우기
-        change = transpose_chord(text, -2)
-        
-        new_code = cv2.putText(fill_img, change, (topLeft[0], topLeft[1]+20), font_italic, 1, (0,0,0), 2, cv2.LINE_AA)
+        text = modify_text(text)
+        change = transpose_chord(text, 4)
+        new_code = cv2.putText(fill_img, change, (topLeft[0], topLeft[1]+20), font_italic, 0.7, (0,0,0), 1, cv2.LINE_AA)
         
         print(change)
 
