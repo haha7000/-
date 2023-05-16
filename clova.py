@@ -1,5 +1,3 @@
-import numpy as np
-import platform
 from PIL import ImageFont, ImageDraw, Image
 
 import uuid
@@ -22,8 +20,8 @@ def transpose_chord(chord, half_steps):
 
 
 
-api_url = ' '
-secret_key = ' '
+api_url = 'https://qrzccj1y9c.apigw.ntruss.com/custom/v1/22243/60e2b8a7e366adc85128cffa9fb17254e9c8e9e4a73a7b6eac9c819a718987a3/general'
+secret_key = 'ZkhvZFJGUXd2WFRkVWNrWExGc0RXbU9EaVRGYXZuRkc='
 
 path = 'ekg.png'
 files = [('file', open(path,'rb'))]
@@ -66,7 +64,7 @@ for field in result['images'][0]['fields']:
         bottomLeft = [int(_) for _ in pts[3]]
 
         fill_img = cv2.rectangle(roi_img, tuple(topLeft), tuple(bottomRight), (255,255,255), thickness=-1) # 코드(chord)부분을 흰색도형으로 지우기
-        change = transpose_chord(text, 4)
+        change = transpose_chord(text, -2)
         
         new_code = cv2.putText(fill_img, change, (topLeft[0], topLeft[1]+20), font_italic, 1, (0,0,0), 2, cv2.LINE_AA)
         
