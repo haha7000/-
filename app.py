@@ -17,8 +17,8 @@ def upload_file():
         path = f'uploads/{str(uuid.uuid4())}.jpg'
         uploaded_file.save(path)
 
-        api_url = 'https://qrzccj1y9c.apigw.ntruss.com/custom/v1/22243/60e2b8a7e366adc85128cffa9fb17254e9c8e9e4a73a7b6eac9c819a718987a3/general'
-        secret_key = 'ZkhvZFJGUXd2WFRkVWNrWExGc0RXbU9EaVRGYXZuRkc='
+        api_url = 'your_key'
+        secret_key = 'your_key'
 
         files = [('file', open(path,'rb'))]
 
